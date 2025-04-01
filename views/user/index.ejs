@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indus Token Airdrop</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            50: '#f5f3ff',
+                            100: '#ede9fe',
+                            200: '#ddd6fe',
+                            300: '#c4b5fd',
+                            400: '#a78bfa',
+                            500: '#8b5cf6',
+                            600: '#7c3aed',
+                            700: '#6d28d9',
+                            800: '#5b21b6',
+                            900: '#4c1d95',
+                        },
+                        secondary: {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Custom styles beyond Tailwind */
+        .gradient-bg {
+            background: linear-gradient(to bottom, #000000, #111827);
+        }
+        
+        .button-gradient {
+            background: linear-gradient(to right, #6d28d9, #2563eb);
+            transition: all 0.3s ease;
+        }
+        
+        .button-gradient:hover {
+            background: linear-gradient(to right, #5b21b6, #1d4ed8);
+            transform: translateY(-2px);
+        }
+        
+        .token-logo {
+            background: linear-gradient(to right, #6d28d9, #2563eb);
+        }
+        
+        .text-gradient {
+            background: linear-gradient(to right, #c4b5fd, #93c5fd);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .card {
+            background-color: rgba(31, 41, 55, 0.5);
+            border: 1px solid rgba(55, 65, 81, 1);
+            border-radius: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 1rem;
+            background-color: rgba(31, 41, 55, 0.9);
+            border-left: 4px solid #8b5cf6;
+            border-radius: 0.25rem;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 50;
+        }
+        
+        .toast.show {
+            transform: translateX(0);
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background-color: #374151;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(to right, #6d28d9, #2563eb);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.7;
+            }
+        }
+        
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+    </style>
+</head>
+<body class="gradient-bg text-white min-h-screen">
+    <!-- Toast Notification -->
+    <div id="toast" class="toast">
+        <div class="flex items-center">
+            <div class="mr-3">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-purple-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+            <div>
+                <p id="toast-title" class="font-bold"></p>
+                <p id="toast-message" class="text-sm text-gray-300"></p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="container mx-auto py-6 px-4 flex justify-between items-center">
+        <div class="flex items-center gap-2">
+            <div class="w-10 h-10 rounded-full token-logo flex items-center justify-center">
+                <span class="font-bold text-lg">I</span>
+            </div>
+            <h1 class="text-xl font-bold">Indus Token</h1>
+        </div>
+        
+        <!-- <button id="connect-wallet" class="button-gradient px-4 py-2 rounded-lg flex items-center">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+            </svg>
+            Connect Wallet
+        </button> -->
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="container mx-auto py-16 px-4 text-center">
+        <div class="max-w-3xl mx-auto">
+            <div class="w-24 h-24 rounded-full token-logo mx-auto mb-8 flex items-center justify-center">
+                <span class="font-bold text-4xl">I</span>
+            </div>
+            <h1 class="text-5xl font-bold mb-6 text-gradient">
+                Indus Token Airdrop
+            </h1>
+            <p class="text-xl text-gray-300 mb-8">
+                Join our community and earn Indus tokens through our referral program and social media tasks.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center mb-8">
+                <!-- <button id="connect-wallet-hero" class="button-gradient px-6 py-3 rounded-lg flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                    </svg>
+                    Connect Wallet
+                </button>
+                
+                <button id="simulate-referral" class="border border-purple-500 text-purple-400 hover:bg-purple-500/10 px-6 py-3 rounded-lg flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                    Simulate Referral
+                </button> -->
+            </div>
+            
+            <div class="p-4 bg-gray-800/50 rounded-lg inline-block">
+                <div class="flex items-center gap-2 text-lg">
+                    <span class="text-purple-400 font-semibold">Your Tokens:</span>
+                    <span id="total-tokens" class="font-bold"> <%= userData.wallet.totalTokens %> </span>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <section class="container mx-auto py-12 px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Referral System -->
+            <div class="card col-span-1 lg:col-span-2 p-6">
+                <div class="mb-4">
+                    <h2 class="text-2xl text-purple-400 font-bold">Referral Program</h2>
+                    <p class="text-gray-400">Earn 3000 Indus tokens for each friend who joins using your referral link</p>
+                </div>
+                <div class="space-y-6">
+                    <div class="p-4 bg-gray-900 rounded-lg">
+                        <div class="flex flex-col sm:flex-row gap-4 items-center">
+                            <div class="flex-1 w-full overflow-hidden">
+                                <p class="text-sm text-gray-400 mb-1">Your Referral Link</p>
+                                <div class="p-3 bg-gray-800 rounded border border-gray-700 text-sm truncate">
+                                    <%= userData.referrals.referralLink %>
+                                </div>
+                            </div>
+                            <button id="copy-referral" class="whitespace-nowrap button-gradient px-4 py-2 rounded-lg flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                                </svg>
+                                Copy Link
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-gray-900 p-4 rounded-lg text-center">
+                            <p class="text-gray-400 text-sm mb-1">Referrals</p>
+                            <p id="referral-count" class="text-2xl font-bold"> <%= userData.referrals.totalReferrals %> </p>
+                        </div>
+                        <div class="bg-gray-900 p-4 rounded-lg text-center">
+                            <p class="text-gray-400 text-sm mb-1">Tokens Earned</p>
+                            <p id="referral-tokens" class="text-2xl font-bold"> <%= userData.referrals.referralEarnings %> </p>
+                        </div>
+                        <div class="bg-gray-900 p-4 rounded-lg text-center">
+                            <p class="text-gray-400 text-sm mb-1">Reward Per Referral</p>
+                            <p class="text-2xl font-bold">3000 Indus</p>
+                        </div>
+                    </div>
+                    
+                    <div class="space-y-2">
+                        <div class="flex justify-between text-sm">
+                            <span>Progress to next tier</span>
+                            <span class="text-purple-400"><span id="tier-progress"> <%= userData.referrals.totalReferrals %> </span>/10 referrals</span>
+                        </div>
+                        <div class="progress-bar">
+                            <div id="progress-fill" class="progress-fill" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Social Tasks -->
+            <div class="card p-6">
+                <div class="mb-4">
+                    <h2 class="text-2xl text-purple-400 font-bold">Social Tasks</h2>
+                    <p class="text-gray-400">Complete tasks to earn additional Indus tokens</p>
+                </div>
+                <div class="space-y-4">
+                    <div class="p-4 bg-gray-900 rounded-lg flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                            </svg>
+                            <div>
+                                <p class="font-medium">Follow on Twitter</p>
+                                <p class="text-sm text-gray-400">Earn 2000 Indus tokens</p>
+                            </div>
+                        </div>
+                        <button id="twitter-join" class="px-3 py-1 rounded-lg button-gradient text-sm">
+                            Join
+                        </button>
+                    </div>
+                    
+                    <div class="p-4 bg-gray-900 rounded-lg flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                            </svg>
+                            <div>
+                                <p class="font-medium">Join Telegram</p>
+                                <p class="text-sm text-gray-400">Earn 2000 Indus tokens</p>
+                            </div>
+                        </div>
+                        <button id="telegram-join" class="px-3 py-1 rounded-lg button-gradient text-sm">
+                            Join
+                        </button>
+                    </div>
+                    
+                    <div class="mt-6 pt-6 border-t border-gray-700">
+                        <h3 class="text-lg font-medium mb-2">Total Earnings</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-gray-900 p-3 rounded-lg text-center">
+                                <p class="text-gray-400 text-xs mb-1">From Tasks</p>
+                                <p id="task-tokens" class="text-xl font-bold"> <%= userData.tasks.taskEarnings %> </p>
+                            </div>
+                            <div class="bg-gray-900 p-3 rounded-lg text-center">
+                                <p class="text-gray-400 text-xs mb-1">From Referrals</p>
+                                <p id="referral-earnings" class="text-xl font-bold"> <%= userData.referrals.referralEarnings %> </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Leaderboard Section -->
+   
+    <!-- Footer -->
+    <footer class="bg-gray-900 py-12 mt-12">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="flex items-center gap-2 mb-6 md:mb-0">
+                    <div class="w-8 h-8 rounded-full token-logo flex items-center justify-center">
+                        <span class="font-bold text-sm">M</span>
+                    </div>
+                    <h2 class="text-lg font-bold">Indus Token</h2>
+                </div>
+                
+                <div class="flex gap-6">
+                    <!-- <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                        </svg>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-white transition-colors">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
+                    </a> -->
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-800 mt-8 pt-8 text-center text-gray-500 text-sm">
+                <p>© <span id="current-year"></span> Indus. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+
+        // State variables
+        let isWalletConnected = false;
+        let referralCount = 0;
+        let twitterJoined = false;
+        let telegramJoined = false;
+        let totalTokens = 0;
+        
+        // Leaderboard data
+        const leaderboardData = [
+            { address: "0x1a2b...3c4d", referrals: 42, tokens: 126000 },
+            { address: "0x5e6f...7g8h", referrals: 38, tokens: 114000 },
+            { address: "0x9i0j...1k2l", referrals: 35, tokens: 105000 },
+            { address: "0x3m4n...5o6p", referrals: 29, tokens: 87000 },
+            { address: "0x7q8r...9s0t", referrals: 24, tokens: 72000 },
+        ];
+        
+        // DOM Elements
+        const connectWalletBtn = document.getElementById('connect-wallet');
+        const connectWalletHeroBtn = document.getElementById('connect-wallet-hero');
+        const simulateReferralBtn = document.getElementById('simulate-referral');
+        const copyReferralBtn = document.getElementById('copy-referral');
+        const twitterJoinBtn = document.getElementById('twitter-join');
+        const telegramJoinBtn = document.getElementById('telegram-join');
+        const sortReferralsBtn = document.getElementById('sort-referrals');
+        const sortTokensBtn = document.getElementById('sort-tokens');
+        
+        const totalTokensEl = document.getElementById('total-tokens');
+        const referralCountEl = document.getElementById('referral-count');
+        const referralTokensEl = document.getElementById('referral-tokens');
+        const tierProgressEl = document.getElementById('tier-progress');
+        const progressFillEl = document.getElementById('progress-fill');
+        const taskTokensEl = document.getElementById('task-tokens');
+        const referralEarningsEl = document.getElementById('referral-earnings');
+        const leaderboardBodyEl = document.getElementById('leaderboard-body');
+        const currentYearEl = document.getElementById('current-year');
+        
+        const toast = document.getElementById('toast');
+        const toastTitle = document.getElementById('toast-title');
+        const toastMessage = document.getElementById('toast-message');
+        
+        // Initialize the page
+        function init() {
+            // Set current year in footer
+            currentYearEl.textContent = new Date().getFullYear();
+            
+            // Render leaderboard
+            renderLeaderboard();
+            
+            // // Update UI
+            // updateUI();
+        }
+        
+        // Show toast notification
+        function showToast(title, message) {
+            toastTitle.textContent = title;
+            toastMessage.textContent = message;
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Connect wallet
+        function connectWallet() {
+            if (!isWalletConnected) {
+                isWalletConnected = true;
+                showToast('Wallet Connected', 'Your wallet has been successfully connected!');
+                // updateUI();
+            }
+        }
+        
+        // Copy referral link
+        function copyReferral() {
+            navigator.clipboard.writeText('https://mammutoken.io/ref/abc123xyz');
+            showToast('Referral Link Copied', 'Your referral link has been copied to clipboard!');
+        }
+        
+        // Simulate referral
+        function simulateReferral() {
+            referralCount++;
+            totalTokens += 3000;
+            showToast('New Referral', 'You earned 3000 Indus tokens from a new referral!');
+            // updateUI();
+        }
+
+
+        const isTelegramMember = '<%= userData.tasks.isTelegramMember %>'
+        console.log('Is telegram member: ', isTelegramMember);
+        console.log('type: ', typeof(isTelegramMember));
+
+        if (isTelegramMember === 'true') {
+            telegramJoinBtn.textContent = 'Completed';
+            telegramJoinBtn.classList.remove('button-gradient');
+            telegramJoinBtn.classList.add('border', 'border-green-500', 'text-green-500', 'bg-transparent');
+        }
+
+        const isXMember = '<%= userData.tasks.isXMember %>'
+        console.log('type of x: ', isXMember);
+        
+        if (isXMember === 'true') {
+            twitterJoinBtn.textContent = 'Completed';
+            twitterJoinBtn.classList.remove('button-gradient');
+            twitterJoinBtn.classList.add('border', 'border-green-500', 'text-green-500', 'bg-transparent');
+        }
+        
+        twitterJoinBtn.addEventListener('click', async () => {
+            
+            const response = await fetch('/join-twitter', {
+                method: 'PUT',
+                headers: 
+                {
+                    'Content-type' : 'application/json'
+                }
+            })
+
+            const result = await response.json()
+
+            console.log('result from server while clicking twitter button: ', result);
+            
+
+            if (result.success) {
+                window.location.href = 'https://x.com/Indus_Official_'
+
+                if (!twitterJoined) {
+                    twitterJoined = true;
+                    totalTokens += 1000;
+                    // showToast('Task Completed', 'You earned 1000 MAMMU tokens for joining Twitter!');
+                    twitterJoinBtn.textContent = 'Completed';
+                    twitterJoinBtn.classList.remove('button-gradient');
+                    twitterJoinBtn.classList.add('border', 'border-green-500', 'text-green-500', 'bg-transparent');
+                    // updateUI();
+                }
+
+                return;
+            }
+        })
+
+        telegramJoinBtn.addEventListener('click', async () => {
+            const response = await fetch('/join-telegram', {
+                method: 'PUT',
+                headers: 
+                {
+                    'Content-type' : 'application/json'
+                }
+            })
+
+            const result = await response.json()
+
+            if (result.success) {
+                window.location.href = 'https://t.me/+DGyXOVFJ5ZRlNjY1'
+                
+                if (!telegramJoined) {
+                    telegramJoined = true;
+                    totalTokens += 1000;
+                    // showToast('Task Completed', 'You earned 1000 MAMMU tokens for joining Telegram!');
+                    telegramJoinBtn.textContent = 'Completed';
+                    telegramJoinBtn.classList.remove('button-gradient');
+                    telegramJoinBtn.classList.add('border', 'border-green-500', 'text-green-500', 'bg-transparent');
+                    // updateUI();
+                }
+
+                return;
+            }
+        })
+        
+       
+        // Render leaderboard
+        function renderLeaderboard(sortByTokens = false) {
+            // Sort data
+            const sortedData = [...leaderboardData];
+            if (sortByTokens) {
+                sortedData.sort((a, b) => b.tokens - a.tokens);
+            } else {
+                sortedData.sort((a, b) => b.referrals - a.referrals);
+            }
+            
+            // Clear existing rows
+            leaderboardBodyEl.innerHTML = '';
+            
+            // Add new rows
+            sortedData.forEach((user, index) => {
+                const row = document.createElement('tr');
+                row.className = 'border-b border-gray-700/50 hover:bg-gray-700/20 transition-colors';
+                
+                let rankBgColor = 'bg-gray-700';
+                if (index === 0) rankBgColor = 'bg-yellow-500';
+                else if (index === 1) rankBgColor = 'bg-gray-400';
+                else if (index === 2) rankBgColor = 'bg-amber-700';
+                
+                row.innerHTML = `
+                    <td class="py-4 px-4">
+                        <div class="flex items-center">
+                            <div class="w-6 h-6 rounded-full flex items-center justify-center mr-2 ${rankBgColor}">
+                                <span class="text-xs font-bold">${index + 1}</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="py-4 px-4 font-mono">${user.address}</td>
+                    <td class="py-4 px-4 text-right">${user.referrals}</td>
+                    <td class="py-4 px-4 text-right font-bold">${user.tokens} MAMMU</td>
+                `;
+                
+                leaderboardBodyEl.appendChild(row);
+            });
+        }
+        
+      
+                connectWalletBtn.classList.remove('button-gradient');
+                connectWalletBtn.classList.add('border', 'border-green-500', 'text-green-500', 'bg-transparent');
+                
+                connectWalletHeroBtn.innerHTML = `
+        //             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        //                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        //             </svg>
+        //             Wallet Connected
+        //         `;
+       
+        // Event listeners
+        connectWalletBtn.addEventListener('click', connectWallet);
+        connectWalletHeroBtn.addEventListener('click', connectWallet);
+        simulateReferralBtn.addEventListener('click', simulateReferral);
+        copyReferralBtn.addEventListener('click', copyReferral);
+        
+        sortReferralsBtn.addEventListener('click', () => {
+            sortReferralsBtn.classList.add('bg-gray-800');
+            sortTokensBtn.classList.remove('bg-gray-800');
+            renderLeaderboard(false);
+        });
+        
+        sortTokensBtn.addEventListener('click', () => {
+            sortTokensBtn.classList.add('bg-gray-800');
+            sortReferralsBtn.classList.remove('bg-gray-800');
+            renderLeaderboard(true);
+        });
+        
+        // Initialize the page
+        init();
+    </script>
+</body>
+</html>

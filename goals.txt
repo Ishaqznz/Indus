@@ -1,0 +1,18 @@
+create a shema -- done
+when user requested the website it should save the fingerprint data into the database -- done
+save that fingerprint into the database
+coomplete all the tokens earning things and other things
+change shchema for everything done
+
+
+// 31 - 03 - 2025
+complete all the designing and make it for perfect launching for tomorrow.
+create an a logo.
+fix all the bug and everything you had.
+make it responsive in the ipad and other devices.
+
+
+1/04/2025
+remove all the dummy contents
+
+
