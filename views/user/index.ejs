@@ -303,6 +303,11 @@
             </div>
         </div>
     </section>
+
+    <div id="copy-toast" class="fixed bottom-5 right-5 bg-green-600 text-white text-sm px-4 py-2 rounded-lg shadow-lg opacity-0 transition-opacity duration-300 z-50">
+        Referral link copied!
+      </div>
+      
     
     <!-- Leaderboard Section -->
    
@@ -343,6 +348,24 @@
     </footer>
 
     <script>
+
+    document.getElementById("copy-referral").addEventListener("click", function () {
+            const referralText = document.querySelector(".truncate").innerText;
+
+            navigator.clipboard.writeText(referralText).then(() => {
+                const toast = document.getElementById("copy-toast");
+                toast.classList.remove("opacity-0");
+                toast.classList.add("opacity-100");
+
+                // Hide after 2.5 seconds
+                setTimeout(() => {
+                    toast.classList.remove("opacity-100");
+                    toast.classList.add("opacity-0");
+                }, 2500);
+            }).catch(err => {
+                console.error("Failed to copy text: ", err);
+            });
+        });
 
         // State variables
         let isWalletConnected = false;
