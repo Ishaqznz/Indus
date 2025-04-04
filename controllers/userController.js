@@ -9,9 +9,7 @@ const loadHome = async (req, res) => {
         .populate('wallet')
         .populate('tasks')
         .populate('referrals')
-
-        console.log('user datas: ', userData);
-
+        
         res.render('user/index', { userData })
         
     } catch (error) {

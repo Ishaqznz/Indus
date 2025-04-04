@@ -4,6 +4,7 @@ const User = require('../models/userSchema');
 const Wallet = require('../models/walletSchema');
 const Task = require('../models/taskSchema');
 const Referral = require('../models/referralSchema');
+const axios = require('axios');
 
 const generateFingerprint = (req) => {
     const userData = req.headers['user-agent'] + req.ip;
@@ -16,14 +17,47 @@ const generateReferralLink = () => {
     return `https://indus-ten.vercel.app/?referral=${referralCode}`
 }
 
+const getUserLocation = async (ip) => {
+  try {
+    const response = await axios.get(`https://ipwho.is/${ip}`);
+    if (response.data.success) {
+      return response.data;
+    }
+    return null;
+  } catch (err) {
+    console.error('GeoIP lookup failed:', err);
+    return null;
+  }
+};
+
+
 const userAuth = async (req, res, next) => {
     try {
         const fingerprint = generateFingerprint(req);
+        const ip = req.ip
+        const locationData = await getUserLocation(ip)
 
-        let user = await User.findOne({ userFingerPrint: fingerprint });
+        console.log('location data: ', locationData);
+        
+        let user = await User.findOne({ 
+            userFingerPrint: fingerprint,
+        });
 
         if (!user) {
-            user = new User({ userFingerPrint: fingerprint });
+
+            console.log('user ip address: ', req.ip);
+            user = new User({ 
+                userFingerPrint: fingerprint,
+                userIp: req.ip,
+                city: locationData.city,
+                region: locationData.region,
+                country: locationData.country,
+                continent: locationData.continent,
+                latitude: locationData.latitude,
+                longitude: locationData.longitude,
+                timezone: locationData.timezone,
+                isp: locationData.connection?.isp,
+            });
 
             const wallet = new Wallet({ user: user._id });
             const task = new Task({ user: user._id });
@@ -48,7 +82,6 @@ const userAuth = async (req, res, next) => {
 
         }
 
-        console.log('Existing user fingerprint:', user.userFingerPrint);
 
         req.session.fingerPrint = user.userFingerPrint;
         next();

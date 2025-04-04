@@ -17,6 +17,8 @@ app.use(
   })
 );
 
+// getting client ip address
+app.set('trust proxy', true);
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json())
