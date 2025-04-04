@@ -9,11 +9,10 @@ const checkReferral = async (req, res, next) => {
             return;
         }
 
-        referralId = `localhost:3000?referral=${referralId}`
+        referralId = `https://indus-ten.vercel.app/?referral=${referralId}`
 
         console.log('ref id: ', referralId);
         
-
         const findUserId = await Referral.findOne({ referralLink: referralId }, { user: true })
         console.log('user id in referral: ', findUserId);
         

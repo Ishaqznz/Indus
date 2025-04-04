@@ -13,7 +13,7 @@ const generateFingerprint = (req) => {
 
 const generateReferralLink = () => {
     const referralCode = crypto.randomBytes(4).toString('hex');
-    return `localhost:3000?referral=${referralCode}`
+    return `https://indus-ten.vercel.app/?referral=${referralCode}`
 }
 
 const userAuth = async (req, res, next) => {
